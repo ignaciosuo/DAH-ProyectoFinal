@@ -1,0 +1,41 @@
+<html>
+<head>
+    <meta charset="utf-8"> <!--Latin-->
+    <meta name="viewport" content="width=device-width, user-scalable=no"> <!--user-scalable Elimina el zoom, width define el ancho de pantalla-->
+    <link type="text/css" href="css/estilos.css" rel="stylesheet">
+</head>
+    <body class="background1">
+        <h1 class="fuente">Ingresa tus datos</h1>
+        <div class="main">
+            
+            <input type="text" name="nombre" placeholder="Nombre" id= nombre>
+            <input type="text" name="correo" placeholder="Correo" id=correo>
+            <input type="text" name="password" placeholder="Password" id=password>
+
+            <button id="registrar">Registrar</button>
+            <button id="iniciar" onclick="window.location.assign('index.html')"> Iniciar Sesión</button>
+        </div>
+
+
+        <script>
+            nombre = document.getElementById('nombre');
+            correo = document.getElementById('correo');
+            password = document.getElementById('password');
+            registrar=document.getElementById('registrar');
+    
+            function registrarUsuario(){
+                if(confirm('¿Estas seguro?')){
+                    localStorage.setItem('nombre',
+                        nombre.value);
+                    localStorage.setItem('correo',correo.value);
+                    localStorage.setItem('password',password.value);
+                    alert("Has sido registrado conrrectamente :)");
+                    window.location.assign('index.html');
+                }
+            };
+            registrar.addEventListener('click',registrarUsuario);
+            
+
+        </script>
+    </body>
+</html>

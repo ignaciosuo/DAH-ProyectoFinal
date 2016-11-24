@@ -1,0 +1,245 @@
+<html>
+  <head>
+    <meta charset="utf-8"> <!--Latin-->
+    <meta name="viewport" content="width=device-width, user-scalable=no"> <!--user-scalable Elimina el zoom, width define el ancho de pantalla-->
+    <link type="text/css" href="css/estilos.css" rel="stylesheet">
+  </head>
+  <body id="body">
+      
+      <header>
+        <button onclick="verMenu()"><img src="img/menu.svg"></button>
+      </header>
+
+      <div id="menu">
+        
+        <div id="usuario">
+          <img src="img/user.jpg">
+          <h1 id="nombre">nombre dinamico</h1>
+        </div>
+        
+        <ul>
+           <li><a href="principal.html">Página principal</a> </li>
+            <li> <a href="guardar.html">Guardar nueva parada</a> </li>
+            <li> <a href="index.html">Salir</a> </li>
+        </ul>
+
+      </div>
+
+
+      <div id="mapa">
+      	
+      </div>
+
+      <div id="botonera">
+      	<button onclick="window.location.assign('guardar.html')">Agregar Nueva Parada de Autobus</button>
+      </div>
+
+  </body>
+  <script>
+    var map;
+  	 window.addEventListener('load',localizar,true);
+  	 
+	  //Obtener localizacion 
+  	function localizar(){
+  	 navigator.geolocation.getCurrentPosition(ubicacion);
+  	}
+  	function ubicacion(datos){
+  	 longitud = datos.coords.longitude;
+  	 latitud = datos.coords.latitude;
+  	 initMap();
+  	}
+
+  function initMap() {
+		  map = new google.maps.Map(document.getElementById('mapa'), {
+  			center: {lat: latitud, lng: longitud},
+        zoom: 16
+			});
+
+      // POSICION ACTUAL DEL USUARIO
+      var image = 'img/usuarioMarcador.png';
+			var marker = new google.maps.Marker({
+				animation: google.maps.Animation.BOUNCE,
+        position: {lat: (latitud + .0003), lng: longitud},
+				map: map,
+				icon: image,
+				label: 'ESTAS AQUI',
+				draggable:false,
+				title: 'AQUI ESTOY'
+			});
+
+      //FUNCIONES PARA CREAR LOS MARCADORES Y EVENTO CLICK EN MARCADOR
+      function addMarker(lati,long,nombre) {
+        var marker1 = new google.maps.Marker({
+          animation: google.maps.Animation.DROP,
+          position: {lat: lati, lng: long},
+          map: map,
+          label: ''+nombre,
+          draggable:false,
+          title: 'AQUI ESTOY'
+        });
+      
+        var infowindow = new google.maps.InfoWindow({
+          content: contentString
+        });
+        marker1.addListener('click',function(){
+          infowindow.open(map,this);
+        });
+      }
+
+      marker.addListener('click', function() {
+          infowindow.open(map, marker);
+      });
+      
+
+
+      //OBTIENEN EL CONTADOR DE NUMERO DE PARADAS
+      noParadas = localStorage.getItem('contador');  
+      var contentString;
+
+      // FOR QUE IMPRIME TODAS LAS PARADAS QUE ENCUENTRE
+      for(a=0; a<parseInt(noParadas); a++){
+        
+        if(a<10){var tempo='0'+a;}else{var tempo=a;}
+        
+        if((localStorage.getItem('contador')) && (localStorage.getItem('uLugarParada'+tempo))){
+
+          parada = localStorage.getItem('uLugarParada'+tempo);
+          ulatitud = localStorage.getItem('uCoordenadaLatitud'+tempo);
+          ulongitud = localStorage.getItem('uCoordenadaLongitud'+tempo);
+          contadorRutas = localStorage.getItem('uContadorParada'+tempo);
+
+          contentString = 
+            '<div id="content">'+
+                '<h1 id="firstHeading" class="firstHeading">'+parada+'</h1>'+
+                '<button class="btnVentana" onclick="eliminarParada('+a+')">Eliminar parada</button>';
+
+
+          // FOR QUE BUSCA LAS RUTAS QUE SE ENCUENTRAN EL LA PARADA ACTUAL
+          for(b=-1; b<parseInt(contadorRutas); b++){
+            if(b<10){var tempoB='0'+(b+1);}else{var tempoB=(b+1);}
+
+            if(localStorage.getItem('uRuta'+tempo+tempoB)){
+
+              uRuta = localStorage.getItem('uRuta'+tempo+tempoB);
+              uDestinos = localStorage.getItem('uDestinos'+tempo+''+tempoB);
+              uTiempoEspera = localStorage.getItem('uTiempoEspera'+tempo+''+tempoB);
+              uTiempoFinal = localStorage.getItem('uTiempoFinal'+tempo+''+tempoB);
+
+              // alert(uRuta+'\n'+uDestinos+'\n'+uTiempoEspera+'\n'+uTiempoFin);
+              // alert('uTiempoFinal'+tempo+''+tempoB);
+
+              contentString = contentString+
+                '<div class="bodyContent">'+
+                '<p>Ruta: '+uRuta+'</p>'+ 
+                '<p>Destinos: '+uDestinos+'</p>'+
+                '<p>Tiempo entre ruta y ruta: '+uTiempoEspera+'</p>'+
+                '<p class="infoContenido">Ultima hora: '+uTiempoFinal+'</p>'+
+                '<button onclick="eliminarRuta('+tempo+','+tempoB+')">Eliminar Ruta: '+uRuta+'</button>'+
+                '</div>';  
+            }
+            
+
+          }//FIN FOR QUE BUSCA LAS RUTAS 
+          contentString=contentString+
+            '<button class="btnVentana" onclick="guardarOtraRuta('+a+')">Guardar nueva ruta</button>'+
+            
+            '</div>';
+    
+            addMarker(parseFloat(ulatitud),parseFloat(ulongitud),parada); 
+          }
+      }
+	}
+  
+
+  //FUNCION PARA GUARDAR OTRA RUTA
+  function guardarOtraRuta(identificador){
+    if(identificador<10){var tempoC='0'+(identificador);}else{var tempoC=identificador;}
+
+    //alert("El identificador del la parada es: "+ tempoC);
+    nRuta = prompt("Nombre de la ruta");
+    nDestinos = prompt("Destinos aproximados");
+    nTiempoEspera = prompt("Tiempo entre ruta y ruta");
+    nTiempoFinal = prompt("Ultima Ruta");
+
+    //COMPRUEBA QUE NO HAYA DADO CANCELAR EN ALGUNO DE LOS PROMPT
+    if((nRuta!=undefined)&&(nDestinos!=undefined)&&(nTiempoEspera!=undefined)&&(nTiempoFinal!=undefined)){
+      //COMPRUEBA QUE LOS CAMPOS NO ESTEN VACIOS    
+      if((nRuta!="")&&(nDestinos!="")&&(nTiempoEspera!="")&&(nTiempoFinal!="")){
+        
+        contRutas = localStorage.getItem('uContadorParada'+tempoC);
+        if(contRutas<10){var tempoD='0'+(contRutas);}else{var tempoC=contRutas;}     
+
+          localStorage.setItem('uRuta'+tempoC+tempoD, nRuta);
+          localStorage.setItem('uDestinos'+tempoC+tempoD, nDestinos);
+          localStorage.setItem('uTiempoEspera'+tempoC+tempoD, nTiempoEspera);
+          localStorage.setItem('uTiempoFinal'+tempoC+tempoD, nTiempoFinal);
+        
+          localStorage.setItem('uContadorParada'+tempoC, parseInt(contRutas)+1);
+
+          window.location.assign('principal.html');
+        }else{
+        alert("Por favor rellena todos los campos");
+        }
+      }
+    }
+
+  //FUNCION PARA ELIMINAR LA RUTA DE UNA PARADA
+  function eliminarRuta(idParada,idRuta ){
+    
+    navigator.vibrate(100);
+    
+    if(idParada<10){ idParada='0'+(idParada);}
+    if(idRuta<10){ idRuta='0'+(idRuta);}
+
+    if(confirm('Estas realmente seguro ?\nUna vez eliminada no podras recuperarla.')){
+        localStorage.removeItem('uRuta'+idParada+idRuta);
+        localStorage.removeItem('uDestinos'+idParada+idRuta);
+        localStorage.removeItem('uTiempoEspera'+idParada+idRuta);
+        localStorage.removeItem('uTiempoFinal'+idParada+idRuta);
+        window.location.assign('principal.html');
+    }
+  }
+
+  //FUNCION PAR ELIMINAR LA PARADA
+  function eliminarParada(idParada){
+    if(idParada<10){ idParada='0'+(idParada);}
+    
+    navigator.vibrate(100);
+
+    if(confirm('Estas realmente seguro ?\nUna vez eliminada no podras recuperarla.')){
+      localStorage.removeItem('uLugarParada'+idParada);
+      localStorage.removeItem('uCoordenadaLatitud'+idParada);
+      localStorage.removeItem('uCoordenadaLongitud'+idParada);
+      nParadas = localStorage.getItem('uContadorParada'+idParada);
+
+      for(a=0; a<parseInt(nParadas); a++){
+        if(a<10){var tempoA='0'+(a);}else{var tempoA=a;}     
+        if(localStorage.getItem('uRuta'+idParada+tempoA)){
+          localStorage.removeItem('uRuta'+idParada+tempoA);
+          localStorage.removeItem('uDestinos'+idParada+tempoA);
+          localStorage.removeItem('uTiempoEspera'+idParada+tempoA);
+          localStorage.removeItem('uTiempoFinal'+idParada+tempoA);  
+        }
+      }
+      localStorage.removeItem('uContadorParada'+idParada);
+      window.location.assign('principal.html');
+    }
+  }
+
+
+
+  // CARGA LOS DATOS DEL USUARIO
+  window.onload=function(){consultarUsuario();};
+  function consultarUsuario(){
+    document.getElementById('nombre').innerHTML = localStorage.getItem('nombre');
+  }
+        
+  
+
+
+  </script>
+  <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPgPzbvexOcgeQzwKZKjQt3oyT0ZeNzN8">
+  </script>
+  <script type="text/javascript" src="js/menu.js"></script>
+</html>

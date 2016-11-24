@@ -1,0 +1,361 @@
+*{
+	margin: 0px;
+	padding: 0px;
+
+	font-family: 'Segoe UI', 'Arial','Sans-serif';
+}
+
+.background1{
+    background: -webkit-linear-gradient(BLACK, PURPLE);
+
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    transition: all 1s ease;
+}
+
+.fuente{
+    width: 100%;
+    height: 70px;
+    color: white;
+    font-size: 2.2em;
+    line-height: 100px;
+    position: fixed
+    background: rgba(0,0,0,.2);
+    float: left;
+    
+    top: 0px;
+    left: 0px;
+}
+
+body{
+	text-align: center;
+	width: 100%;
+	height: 100%;
+
+}
+
+header{
+    width: 100%;
+    z-index: 9;    
+    height: 50px;
+    background: rgba(0,0,0,.0);
+    position: fixed;
+    text-align: left;
+    
+}
+header>button{
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+}
+
+#menu{
+    width: 80%;
+    height: 100%;
+    background: #318fc7;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    /*Ocultar*/
+    left: -100%;
+    transition: .3s all;
+    z-index: 9;
+}
+.verMenu{
+    left: 0% !important;
+}
+
+
+#usuario{
+     
+    height: 180px;
+    background: #105e8e;
+    width: 100%;
+    float: left;
+    text-align: center;
+    color:white;
+}
+#usuario>img{
+    height: 80px;
+    margin-top: 5px;
+    border-radius: 50%;
+}
+
+#usuario>h1{
+    text-align: center;
+    width: 100%;
+}
+
+
+#menu>ul{
+    width: 100%;
+    float: left;
+    background-color: #318fc7;
+}
+
+#menu li{
+    font-size: 1.3em;
+    width: 100%;
+    height: 40px;
+    float: left;
+    line-height: 40px;
+    padding-left:10px;
+    box-sizing: border-box;
+}
+
+#menu a{
+	text-decoration: none;
+	color: white;
+}
+
+
+
+/*Pagina principal y de registro*/
+.main{
+	position: absolute;
+	top: 20%;
+	width: 90%;
+	height: 80%;
+	left: 5%;
+	box-sizing: border-box;
+	
+}
+
+	.main > p{
+		font-size: 2em;
+		margin: 10px auto 10px auto;
+
+	}
+	.main>input{
+		width: 90%;
+		display: block;
+		margin: 10px auto 10px auto; 
+		font-size: 1.1em;
+		text-align: center;
+		border-radius: 20px;
+		padding: 7px 25px;
+		border:none;
+		outline: none;
+		transition: .2s all;
+		background: #7a2951;
+		color: white;
+	}
+
+	.main>p:first-child{
+		margin-bottom: 50px;
+	}
+
+
+	.main>input:focus{
+		border: 2px solid #050D46;
+	}
+	
+
+
+
+	.main>button{
+		display: block;
+		width: 150px;
+		height: 40px;
+		
+		margin: 10px auto 10px auto; 
+		padding: 5px 0px;
+		font-size: 1.2em;
+		outline: none;
+		border-radius: 4px;
+		background: transparent;
+		border: 2px solid rgba(255,255,255,.8); /*linea blanca*/
+		color: rgba(255,255,255,.8);
+		box-shadow: 0px 4px 0px rgba(0,0,0,.4);
+
+	}
+
+	.main>button:first-child{
+		margin-bottom: 50px;
+	}
+	
+	.main>button:active{
+		box-shadow:none;
+	}
+
+/******************************/
+
+/**************** VENTANA DE INFORMACION**************/
+
+.gm-style-iw button{
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 3px 9px 3px 9px;
+	outline: none;	
+	border-radius: 5px;
+	margin-left: 10px;
+	
+	display: inline-block;
+}
+
+.bodyContent{
+	padding: 0px;
+	margin-bottom: 10px;
+}
+
+.bodyContent>p{
+	text-align: left;
+	margin-left: 10px;
+	font-size: 1.2em !important;
+}
+.bodyContent > button{
+	display: block;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	padding: 3px 9px 3px 9px;
+	outline: none;	
+	border-radius: 5px;
+	margin-left: 10px;
+	
+}
+
+
+
+
+.nuevaRuta{
+	position: absolute;
+	width: 200px;
+	height: 200px;
+	z-index: 9;
+	box-sizing: border-box;
+	display: none;
+}
+
+
+/******************************/	
+
+/****************MENU**************/
+#mapa {
+	position: fixed;
+	top: 0px;
+	bottom: 0px;
+	right: 0px;
+	left: 0px;
+	float: left;
+	width: 100%;
+	height: 100%;
+	background: red;
+	z-index: 0;	
+}
+
+#botonera{
+	float: left;
+	position: fixed;
+	height: 60px;
+	width: 100%;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	background: rgba(0,0,0,0);
+}
+#boton-menu{
+	position: fixed;
+	float: left;
+	width: 60px;
+	height: 60px;
+	background: yellow;
+	left: 10px;
+	top: 10px;
+	z-index: 3;
+}
+
+#botonera>button{
+	width: 80%;
+	height: 50px;
+	margin-top: 5px;
+	border-radius: 20px;
+	background: purple;
+	border: 2px solid rgba(255,255,255,.8); 
+	/*color: rgba(255,255,255,.8);*/
+	color:white;
+
+}
+
+/************GUARDAR.HTML****************/
+body{
+	background: #8FC9FF;
+}
+
+.mapa{
+	width: 100%;
+	height: 35%;
+}
+
+.formulario{
+	width: 100%;
+	height:  65%;
+	text-align: center;
+	
+	padding: 10px;
+	box-sizing: border-box;
+
+
+}
+
+	.formulario>input{
+		display: block;
+		margin: 10px auto 10px auto; 
+		border-radius: 10px;
+		padding: 5px 15px; 
+		font-size: 1.4em;
+		box-sizing: border-box;
+		width: 90%;
+		border: none;
+		outline: none;
+		background: #7a2951;
+		color: white;
+	}
+
+	.formulario>.input1{
+		
+		font-size: .9em;
+		
+		text-align: left;
+		width: 90%;
+		border-radius: 10px;
+		padding: 5px 15px; 
+		
+		box-sizing: border-box;
+
+		outline: none;	
+		height: 40px;
+		margin: 20px auto 0px auto;
+	}
+
+	.formulario>button{
+		clear: both;
+		
+		height: 50px;
+		width: 40%;
+		font-size: 1.1em;
+		
+		padding: 10px 20px;
+		border: none;
+		margin: 10px auto 10px auto; 
+		outline: none;
+		border-radius: 4px;
+		background: transparent;
+		border: 2px solid rgba(255,255,255,.8); /*linea blanca*/
+		color: rgba(255,255,255,.8);
+
+	}
+		
+
+		.formulario>textarea:focus{
+			border: 1px solid rgba(0,0,0,.8); 
+		}
+		.formulario>.input1:focus{
+			border: 1px solid rgba(0,0,0,.8); 
+		}
+		.formulario>input:focus{
+			border: 1px solid rgba(0,0,0,.8); 
+		}
+		.formulario>button:active{
+			border: 1px solid rgba(0,0,0,.8); 
+		}

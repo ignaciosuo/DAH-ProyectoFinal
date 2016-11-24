@@ -1,0 +1,56 @@
+<html>
+<head>
+    <meta charset="utf-8"> <!--Latin-->
+    <meta name="viewport" content="width=device-width, user-scalable=no"> <!--user-scalable Elimina el zoom, width define el ancho de pantalla-->
+    <link type="text/css" href="css/estilos.css" rel="stylesheet">
+</head>
+    <body class="background1">
+    <h1 class="fuente">Bienvenido</h1>
+
+        <div class="main">
+            
+            
+            <input type="email" name="usuario" placeholder="Correo"  id="correo">
+            <input type="password" name="password"  placeholder="Password" id="password">
+
+            <button id="iniciar">Iniciar sesión</button>
+            <button onclick="window.location.assign('registro.html')">Regístrate</button>
+        </div>
+        
+    </body>
+    <script>
+            var correo = document.getElementById('correo');
+            var password = document.getElementById('password');
+            var iniciar=document.getElementById('iniciar');
+    
+
+            function iniciarSesion(){
+                
+
+                if((correo.value)&&(password.value)){
+                    if(localStorage.getItem('correo') == correo.value){
+                        if(localStorage.getItem('password')==password.value){
+                            
+                            window.location.assign('principal.html');
+
+                        }else{
+                            navigator.vibrate(300);
+                            alert("La contraseña no es la correcta :(");    
+                        }
+                    }else{
+                        navigator.vibrate(300);
+                        alert("Direccion de correo no encontrada :(");
+                    }
+                }else{
+                    navigator.vibrate(100);
+                    alert("Faltan campos por llenar :(");
+                }
+
+            };
+
+            
+            iniciar.addEventListener('click',iniciarSesion);
+
+        </script>
+
+</html>

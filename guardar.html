@@ -1,0 +1,155 @@
+<html>
+    <head>
+        <meta charset="utf-8"> <!--Latin-->
+        <meta name="viewport" content="width=device-width, user-scalable=no">   <!--user-scalable Elimina el zoom, width define el ancho de pantalla-->
+        <link type="text/css" href="css/estilos.css" rel="stylesheet">
+    </head>
+    
+    <body id="body" class="background1">
+
+        <header>
+          <button onclick="verMenu()"><img src="img/menu.svg"></button>
+        </header>
+
+        <div id="menu">
+          
+          <div id="usuario">
+            <img src="img/user.jpg">
+            <h1 id="nombre">nombre dinamico</h1>
+          </div>
+          
+          <ul>
+            <li><a href="principal.html">Página principal</a> </li>
+            <li> <a href="guardar.html">Guardar nueva parada</a> </li>
+            <li> <a href="index.html">Salir</a> </li>
+          </ul>
+
+        </div>
+
+        
+        <div id="mapa1" class="mapa">
+                
+        </div>
+
+        <div class="formulario">
+            
+            <input id="parada" type="text" name="nombre" placeholder="Nombre de lugar" required>
+            <input class="input1" id="ruta" type="text" name="" placeholder="Número de ruta">
+            <input class="input1" id="destinos" type="text" name="" placeholder="Destinos aproximados">
+            <input class="input1" id="tiempo" type="text" name="" placeholder="Tiempo entre cada ruta">
+            <input class="input1" id="tiempoFinal" type="text" name="" placeholder="Hora de última ruta">
+
+            <button id="btnGuardar">Guardar</button>
+        </div>
+
+    </body>
+
+
+    <script>
+        var map;
+        var latitud;
+        var longitud;
+
+        window.addEventListener('load',localizar,true);
+
+         //Obtener localizacion
+         function localizar(){
+            navigator.geolocation.getCurrentPosition(ubicacion);
+         }
+
+         function ubicacion(datos){
+            longitud = datos.coords.longitude;
+            latitud = datos.coords.latitude;
+            initMap();
+         }
+
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('mapa1'), {
+                center: {lat: latitud, lng: longitud},
+                zoom: 17
+            });
+
+            
+            var image = 'img/usuarioMarcador.png';
+            var marker = new google.maps.Marker({
+                animation: google.maps.Animation.BOUNCE,
+                position: {lat: latitud, lng: longitud},
+                map: map,
+                icon: image,
+                label: 'Estas Aqui',
+                scale:10,
+                draggable:false,
+                title: 'AQUI ESTOY',
+                
+            });
+        }
+
+    </script>
+    <script>
+        /*****************GUARDAR DATOS*******************/
+        var parada = document.getElementById('parada');
+        var ruta = document.getElementById('ruta');
+        var destinos = document.getElementById('destinos');
+        var tiempo = document.getElementById('tiempo');
+        var tiempoFinal = document.getElementById('tiempoFinal');
+        var btnGuardar = document.getElementById('btnGuardar');
+        
+
+
+        var contador;
+         
+        function consultarContador(){
+            if(!localStorage.getItem('contador')){
+                localStorage.setItem('contador','0');
+            }
+            // alert(localStorage.getItem('contador'));
+        };
+
+        
+        window.addEventListener('load',consultarContador,true);
+
+        function guardarLugar(){
+            if((parada.value!="")  && (ruta.value!="") && (destinos.value!="")  && (tiempo.value != "")){
+                if(confirm('Estas seguro??')){
+                    contador = localStorage.getItem('contador');
+                    resp = contador;
+
+                    if(parseInt(contador)<10){
+                        contador = '0'+contador;
+                    }
+
+                    localStorage.setItem('uLugarParada'+contador, parada.value);
+                    localStorage.setItem('uCoordenadaLatitud'+contador, latitud);
+                    localStorage.setItem('uCoordenadaLongitud'+contador,longitud);
+                    localStorage.setItem('uRuta'+contador+'00', ruta.value);
+                    localStorage.setItem('uDestinos'+contador+'00', destinos.value);
+                    localStorage.setItem('uTiempoEspera'+contador+'00', tiempo.value);
+                    localStorage.setItem('uTiempoFinal'+contador+'00', tiempoFinal.value);
+
+                    localStorage.setItem('uContadorParada'+contador,'1');
+                    localStorage.setItem('contador',parseInt(contador)+1);
+                    window.location.assign('principal.html');
+                }
+            }else{
+                alert("Faltan campos por llenar :( ");
+            }
+        };
+
+
+        btnGuardar.addEventListener('click', guardarLugar);
+        window.onload=function(){consultarUsuario();};
+        
+        function consultarUsuario(){
+            document.getElementById('nombre').innerHTML = localStorage.getItem('nombre');
+
+        }
+
+
+    </script>
+
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCPgPzbvexOcgeQzwKZKjQt3oyT0ZeNzN8">
+    </script>
+
+    <script type="text/javascript" src="js/menu.js"></script>
+</html>
